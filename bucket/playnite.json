@@ -1,0 +1,33 @@
+{
+    "version": "7.8",
+    "description": "An open source video game library manager and launcher with support for 3rd party libraries like Steam, GOG, Origin, Battle.net and Uplay. Includes game emulation support, providing one unified interface for your games.",
+    "homepage": "https://playnite.link/",
+    "license": "MIT",
+    "url": "https://playnite.link/update/stable/7.8/Playnite78.zip",
+    "hash": "a375fdb961dc654ecffc83d87f8f99fc3a28d4ace93fa85187d494d598cc19b4",
+    "bin": "PlayniteUI.exe",
+    "shortcuts": [
+        [
+            "PlayniteUI.exe",
+            "Playnite"
+        ]
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$dir\\config.json\")) {",
+        "    New-Item -Force -Path \"$dir\" -Name 'config.json' -Value '{}' | Out-Null",
+        "}"
+    ],
+    "checkver": {
+        "github": "https://github.com/JosefNemec/Playnite"
+    },
+    "autoupdate": {
+        "url": "https://playnite.link/update/stable/$version/Playnite$cleanVersion.zip"
+    },
+    "persist": [
+        "browsercache",
+        "cache",
+        "ExtensionsData",
+        "library",
+        "config.json"
+    ]
+}

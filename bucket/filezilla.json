@@ -1,0 +1,70 @@
+{
+    "version": "3.49.1",
+    "description": "Fast and reliable cross-platform FTP, FTPS and SFTP client with lots of useful features and an intuitive graphical user interface.",
+    "homepage": "https://filezilla-project.org/",
+    "license": "GPL-2.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://download.filezilla-project.org/client/FileZilla_3.49.1_win64.zip",
+            "hash": "sha512:26c180c88ebb606f9518da6056a85711db285038c982855cbe05416edeb31d704733892de44b52e95c9cc5a14b872a6fa4d9baf96656fd8a910885594183a442"
+        },
+        "32bit": {
+            "url": "https://download.filezilla-project.org/client/FileZilla_3.49.1_win32.zip",
+            "hash": "sha512:3cd62e8ee9841dac69fff6c71d49150579bc8727c47fcc1f991a96d135639559585228b4f884712d04aafbef59d355f699e72236608d53608197cad1e39b1db0"
+        }
+    },
+    "extract_dir": "FileZilla-3.49.1",
+    "pre_install": [
+        "@'",
+        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>",
+        "<FileZilla3>",
+        "  <Settings>",
+        "    <Setting name=\"Config Location\">config</Setting>",
+        "    <Setting name=\"Disable update check\">1</Setting>",
+        "  </Settings>",
+        "</FileZilla3>",
+        "'@ | Out-File \"$dir\\fzdefaults.xml\" -Encoding Ascii",
+        "",
+        "$oldfzdefault = \"$persist_dir\\fzdefaults.xml\"",
+        "if (Test-Path \"$oldfzdefault\") {",
+        "    Write-Host 'Adopting new persist configuration...' -f Yellow",
+        "    $oldConfigDir = \"$((Get-Item \"$persist_dir\").PSDrive.Root)filezilla\"",
+        "    $newConfigDir = \"$persist_dir\\config\"",
+        "    if (Test-Path \"$oldConfigDir\") {",
+        "        Write-Host \"Moving existing configuration from '$oldConfigDir' to '$newConfigDir'\" -f Yellow",
+        "        if (Test-Path \"$newConfigDir\") {",
+        "            Move-Item \"$oldConfigDir\\*\" \"$newConfigDir\"",
+        "        } else { ",
+        "            Move-Item \"$oldConfigDir\" \"$newConfigDir\"",
+        "        }",
+        "    }",
+        "    Rename-Item \"$oldfzdefault\" \"fzdefaults.xml.bak\"",
+        "}"
+    ],
+    "bin": "filezilla.exe",
+    "shortcuts": [
+        [
+            "filezilla.exe",
+            "FileZilla"
+        ]
+    ],
+    "persist": "config",
+    "checkver": {
+        "url": "https://filezilla-project.org/download.php?show_all=1",
+        "re": "The latest stable version of FileZilla Client is ([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://download.filezilla-project.org/client/FileZilla_$version_win64.zip"
+            },
+            "32bit": {
+                "url": "https://download.filezilla-project.org/client/FileZilla_$version_win32.zip"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/FileZilla_$version.sha512"
+        },
+        "extract_dir": "FileZilla-$version"
+    }
+}

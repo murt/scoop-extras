@@ -1,0 +1,39 @@
+{
+    "version": "0.96.4",
+    "description": "Photo viewer, image resizer & batch converter.",
+    "homepage": "https://www.xnview.com/en/xnviewmp/",
+    "license": "Freeware|Proprietary",
+    "architecture": {
+        "64bit": {
+            "url": "https://download.xnview.com/XnViewMP-win-x64.zip",
+            "hash": "8ed1370ad3ea16d5ffbf8617ea449791634566ba0dfb13c1078c33edce467e80"
+        },
+        "32bit": {
+            "url": "https://download.xnview.com/XnViewMP-win.zip",
+            "hash": "0c651b36dc56a7b45c34ff5cc362c749328919ec5654d9db44af116fa2a270b5"
+        }
+    },
+    "extract_dir": "XnViewMP",
+    "bin": "xnviewmp.exe",
+    "shortcuts": [
+        [
+            "xnviewmp.exe",
+            "XnViewMP"
+        ]
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$env:APPDATA\\XnViewMP\\xnview.ini\")) {",
+        "    New-Item -Force -Path \"$env:APPDATA\\XnViewMP\" -Name \"xnview.ini\" -ItemType file | Out-Null}"
+    ],
+    "checkver": "Download <strong>XnView MP ([\\d.]+)",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://download.xnview.com/XnViewMP-win-x64.zip"
+            },
+            "32bit": {
+                "url": "https://download.xnview.com/XnViewMP-win.zip"
+            }
+        }
+    }
+}

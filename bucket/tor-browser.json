@@ -1,0 +1,61 @@
+{
+    "##": "Multiple components under various open source licenses. Included HTTPS Everywhere extension is the strictest.",
+    "version": "9.5.3",
+    "description": "Web browser that connects to the internet via the Tor anonymity network",
+    "homepage": "https://www.torproject.org/",
+    "license": "GPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://dist.torproject.org/torbrowser/9.5.3/torbrowser-install-win64-9.5.3_en-US.exe",
+            "hash": "e74fa6ae21364d181e8bc8c274b8ad03e95dc10f586f65c466050910d2097841"
+        },
+        "32bit": {
+            "url": "https://dist.torproject.org/torbrowser/9.5.3/torbrowser-install-9.5.3_en-US.exe",
+            "hash": "e7fb69e3a7f7a4b4b404933e03b70ae7d47bbd8f0fef394e62167b5e45633151"
+        }
+    },
+    "installer": {
+        "script": [
+            "Start-Process \"$dir\\$fname\" \"/S /D=$dir\" -PassThru -NoNewWindow | Wait-Process",
+            "movedir \"$dir\\Browser\" \"$dir\" | Out-Null",
+            "Remove-Item \"$dir\\$fname\", \"$dir\\*.lnk\" -Force",
+            "# Persisting profile breaks Tor-Launcher and makes it fallback to config files in Tor folder: move them there",
+            "movedir \"$dir\\TorBrowser\\Data\\Tor\" \"$dir\\TorBrowser\\Tor\" | Out-Null",
+            "# Update extensions in persisted profile",
+            "movedir \"$dir\\TorBrowser\\Data\\Browser\\profile.default\" \"$persist_dir\\TorBrowser\\Data\\Browser\\profile.default\" | Out-Null"
+        ]
+    },
+    "persist": [
+        "TorBrowser\\Data\\Browser\\profile.default",
+        "TorBrowser\\Tor\\torrc"
+    ],
+    "bin": [
+        [
+            "firefox.exe",
+            "tor-browser"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "firefox.exe",
+            "Tor Browser"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.torproject.org/download/",
+        "regex": "torbrowser/([\\d.]+)/torbrowser-install-win64"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://dist.torproject.org/torbrowser/$version/torbrowser-install-win64-$version_en-US.exe"
+            },
+            "32bit": {
+                "url": "https://dist.torproject.org/torbrowser/$version/torbrowser-install-$version_en-US.exe"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/sha256sums-signed-build.txt"
+        }
+    }
+}

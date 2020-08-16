@@ -1,0 +1,77 @@
+{
+    "version": "2.11.1",
+    "description": "A tabbed SSH solution for Windows, combining PuTTY/KiTTY, WinSCP and VcXsrv",
+    "homepage": "https://winsshterm.blogspot.com/",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://winsshterm.blogspot.com/p/license.html"
+    },
+    "depends": "putty",
+    "url": "http://dl.winsshterm.net/WinSSHTerm-2.11.1.zip",
+    "extract_dir": "WinSSHTerm",
+    "hash": "e3167ad2adfb5362ec651a2d4d93bdb5bd9506d6f2353ef4e0e59a1f95e2ce7a",
+    "bin": "WinSSHTerm.exe",
+    "shortcuts": [
+        [
+            "WinSSHTerm.exe",
+            "WinSSHTerm"
+        ]
+    ],
+    "post_install": [
+        "New-Item -ItemType Directory -Force -Path \"$dir\\lib\" | Out-Null",
+        "New-Item -ItemType Directory -Force -Path \"$dir\\tools\" | Out-Null",
+        "New-Item -ItemType Directory -Force -Path \"$dir\\config\" | Out-Null",
+        "",
+        "$puttyDir = \"$(appdir putty $global)\\current\"",
+        "if (Test-Path \"$puttyDir\\putty.exe\") {",
+        "    cmd /c mklink /h \"$dir\\tools\\putty.exe\" \"$puttyDir\\putty.exe\"",
+        "} else { ",
+        "    Write-Output \"Error: putty.exe not found\";",
+        "}",
+        "if (Test-Path \"$puttyDir\\pageant.exe\") {",
+        "    cmd /c mklink /h \"$dir\\tools\\pageant.exe\" \"$puttyDir\\pageant.exe\"",
+        "} else {",
+        "    Write-Output \"Warning: putty's pageant.exe not found\";",
+        "}",
+        "if (Test-Path \"$puttyDir\\plink.exe\") {",
+        "    cmd /c mklink /h \"$dir\\tools\\plink.exe\" \"$puttyDir\\plink.exe\"",
+        "} else {",
+        "    Write-Output \"Warning: putty's plink.exe not found\";",
+        "}",
+        "",
+        "$winscpDir = \"$(appdir winscp $global)\\current\"",
+        "if (Test-Path \"$winscpDir\\WinSCP.exe\") {",
+        "    cmd /c mklink /j \"$dir\\tools\\WinSCP\" \"$winscpDir\"",
+        "} else {",
+        "    Write-Output \"Note: Install WinSCP for File Transfer support\";",
+        "}",
+        "",
+        "$vcxsrvDir = \"$(appdir vcxsrv $global)\\current\"",
+        "if (Test-Path \"$vcxsrvDir\\vcxsrv.exe\") {",
+        "    cmd /c mklink /j \"$dir\\tools\\VcXsrv\" \"$vcxsrvDir\" ",
+        "} else {",
+        "    Write-Output \"Note: Install VcXsrv for X-Server support\";",
+        "}",
+        "",
+        "if (!(Test-Path \"$dir\\config\\preferences.xml\")) { ",
+        "    $preferencesXml = '<?xml version=\"1.0\" encoding=\"utf-8\"?><Settings><CheckForXServer>False</CheckForXServer><CheckForWinSCP>False</CheckForWinSCP><CheckForPageant>False</CheckForPageant></Settings>'",
+        "    Set-Content -Path \"$dir\\config\\preferences.xml\" -Encoding UTF8 -Value $preferencesXml ",
+        "}"
+    ],
+    "suggest": {
+        "Copy files": "extras/winscp",
+        "X-server": "extras/vcxsrv"
+    },
+    "persist": [
+        "config",
+        "tools"
+    ],
+    "checkver": "WinSSHTerm-([\\d.]+)\\.zip",
+    "autoupdate": {
+        "url": "http://dl.winsshterm.net/WinSSHTerm-$version.zip",
+        "hash": {
+            "url": "https://winsshterm.blogspot.com/",
+            "find": "SHA256 \\(.ZIP\\):\\s*([A-Fa-f0-9]{64})"
+        }
+    }
+}

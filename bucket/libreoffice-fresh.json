@@ -1,0 +1,62 @@
+{
+    "version": "7.0.0.3",
+    "description": "Powerful office suite",
+    "homepage": "https://libreoffice.org/",
+    "license": "MPL-2.0",
+    "suggest": {
+        "Visual C++ Redistributable for Visual Studio 2015": "vcredist2015"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://downloadarchive.documentfoundation.org/libreoffice/old/7.0.0.3/win/x86_64/LibreOffice_7.0.0.3_Win_x64.msi",
+            "hash": "7e779fc8e0ec162fc3c6bbd96779ea7c4578e4ae43c2591516a24043752b78f6"
+        },
+        "32bit": {
+            "url": "https://downloadarchive.documentfoundation.org/libreoffice/old/7.0.0.3/win/x86/LibreOffice_7.0.0.3_Win_x86.msi",
+            "hash": "6aa63e23906d466de9e1971f80e5b3dc5350cbcf0d8342eba4e0bfa62cf61b04"
+        }
+    },
+    "shortcuts": [
+        [
+            "program\\sbase.exe",
+            "LibreOffice\\LibreOffice Base"
+        ],
+        [
+            "program\\scalc.exe",
+            "LibreOffice\\LibreOffice Calc"
+        ],
+        [
+            "program\\sdraw.exe",
+            "LibreOffice\\LibreOffice Draw"
+        ],
+        [
+            "program\\simpress.exe",
+            "LibreOffice\\LibreOffice Impress"
+        ],
+        [
+            "program\\smath.exe",
+            "LibreOffice\\LibreOffice Math"
+        ],
+        [
+            "program\\swriter.exe",
+            "LibreOffice\\LibreOffice Writer"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.libreoffice.org/download/download/",
+        "regex": "libreoffice-([\\d.]+)\\.tar\\.xz"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://downloadarchive.documentfoundation.org/libreoffice/old/$version/win/x86_64/LibreOffice_$version_Win_x64.msi"
+            },
+            "32bit": {
+                "url": "https://downloadarchive.documentfoundation.org/libreoffice/old/$version/win/x86/LibreOffice_$version_Win_x86.msi"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256"
+        }
+    }
+}
